@@ -17,7 +17,7 @@ contract SimpleBank {
     mapping (address => uint) private balances;
     
     /* Fill in the keyword. We want to create a getter function and allow contracts to be able to see if a user is enrolled.  */
-    mapping (address => bool) enrolled;
+    mapping (address => bool) public enrolled;
 
     /* Let's make sure everyone knows who owns the bank. Use the appropriate keyword for this*/
     address public owner;
@@ -82,11 +82,13 @@ contract SimpleBank {
         /* Add the amount to the user's balance, call the event associated with a deposit,
           then return the balance of the user */
           
-          balances[msg.sender] += msg.value;
+    require(msg.value > 0);
+	require(enrolled[msg.sender] == true);
 
-          emit LogDepositMade(msg.sender, msg.value);
-
-          return balances[msg.sender];
+	balances[msg.sender] += msg.value;
+	emit LogDepositMade(msg.sender, msg.value);
+	return balances[msg.sender];
+ 
     }
 
     /// @notice Withdraw ether from bank
@@ -99,16 +101,15 @@ contract SimpleBank {
            Subtract the amount from the sender's balance, and try to send that amount of ether
            to the user attempting to withdraw. 
            return the user's balance.*/
-              require(withdrawAmount <= balances[msg.sender]);
-
-           balances[msg.sender] -= withdrawAmount;
            
-           if(!msg.sender.send(withdrawAmount)){
-             balances[msg.sender] += withdrawAmount;
-           }
-           else{
-             emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
-           }
+        require(withdrawAmount > 0);
+        require(withdrawAmount <= balances[msg.sender]);
+	require(enrolled[msg.sender] == true);
+
+	balances[msg.sender] -= withdrawAmount;
+	emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+	return balances[msg.sender];
+
            
     }
 
