@@ -53,7 +53,7 @@ contract SimpleBank {
     // otherwise, the sender's money is transferred to contract
    fallback () external payable {
         revert();
-
+    }
     /// @notice Get balance
     /// @return The balance of the user
     // A SPECIAL KEYWORD prevents function from editing state variables;
