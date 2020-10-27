@@ -5,7 +5,7 @@
     https://solidity.readthedocs.io/en/v0.6.12/060-breaking-changes.html
 */
 
-pragma solidity ^0.6.12;
+pragma solidity ^0.5.0;
 
 contract SimpleBank {
 
@@ -88,6 +88,7 @@ contract SimpleBank {
 	balances[msg.sender] += msg.value;
 	emit LogDepositMade(msg.sender, msg.value);
 	return balances[msg.sender];
+
  
     }
 
@@ -108,7 +109,7 @@ contract SimpleBank {
 
 	balances[msg.sender] -= withdrawAmount;
 	emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
-	return balances[msg.sender];
+	return balances[msg.sender] = 0;
 
            
     }
