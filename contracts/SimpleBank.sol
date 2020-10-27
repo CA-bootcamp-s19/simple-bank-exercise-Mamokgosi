@@ -86,7 +86,7 @@ contract SimpleBank {
 	require(enrolled[msg.sender] == true);
 	balances[msg.sender] += msg.value;
 	emit LogDepositMade(msg.sender, msg.value);
-	return balances[msg.sender] = 0;
+	return balances[msg.sender];
  
     }
 
@@ -107,7 +107,7 @@ contract SimpleBank {
 
 	balances[msg.sender] -= withdrawAmount;
 	emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
-	return balances[msg.sender] = 0;
+	return balances[msg.sender];
 
 	
      
