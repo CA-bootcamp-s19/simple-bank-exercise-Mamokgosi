@@ -81,14 +81,12 @@ contract SimpleBank {
     function deposit() public payable returns (uint) {
         /* Add the amount to the user's balance, call the event associated with a deposit,
           then return the balance of the user */
-          
-   
-          balances[msg.sender] += msg.value;
-
-          emit LogDepositMade(msg.sender, msg.value);
-
-          return balances[msg.sender];
-
+	  
+        require(msg.value > 0);
+	require(enrolled[msg.sender] == true);
+	balances[msg.sender] += msg.value;
+	emit LogDepositMade(msg.sender, msg.value);
+	return balances[msg.sender];
  
     }
 
@@ -103,18 +101,16 @@ contract SimpleBank {
            to the user attempting to withdraw. 
            return the user's balance.*/
            
-        
-	
+        require(withdrawAmount > 0);
         require(withdrawAmount <= balances[msg.sender]);
+	require(enrolled[msg.sender] == true);
 
-           balances[msg.sender] -= withdrawAmount;
-           
-           if(!msg.sender.send(withdrawAmount)){
-             balances[msg.sender] += withdrawAmount;
-           }
-           else{
-             emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
-           }
+	balances[msg.sender] -= withdrawAmount;
+	emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+	return balances[msg.sender];
+
+	
+     
            
     }
 
